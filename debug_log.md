@@ -8,3 +8,8 @@
    - Dùng tên dây khác tên đã khai báo (q1 thay vì w1), bị tạo ngầm dây 1 bit.
    - Quên `end` đóng khối always, quên `reg` cho cổng ra được gán trong always.
    - Quên đuôi `.v` khi lưu file (adder1, vector5).
+   ## Lỗi gặp ở ngày 7 (priority_encoder4)
+- Tính expected sai điều kiện: `if (in[k]==0)` thay vì `==1`, làm testbench báo lỗi cho mạch đúng. Cách tránh: tự chạy tay một ví dụ (1010 thì pos = 1) trước khi tin testbench.
+- Đặt tên module là `top_module` (chép từ HDLBits) trong khi testbench gọi `priority_encoder4`.
+- Dán khối $display ra ngoài vòng for và xóa mất phần báo PASS/FAIL cuối. Cách nhớ: so sánh và in lỗi nằm trong vòng lặp, tổng kết nằm sau vòng lặp.
+- Dán nhiều lệnh một lúc làm terminal dính chữ. Cách tránh: dán từng lệnh, hoặc `cls` trước.

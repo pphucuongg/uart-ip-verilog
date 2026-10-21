@@ -13,3 +13,7 @@
 - Đặt tên module là `top_module` (chép từ HDLBits) trong khi testbench gọi `priority_encoder4`.
 - Dán khối $display ra ngoài vòng for và xóa mất phần báo PASS/FAIL cuối. Cách nhớ: so sánh và in lỗi nằm trong vòng lặp, tổng kết nằm sau vòng lặp.
 - Dán nhiều lệnh một lúc làm terminal dính chữ. Cách tránh: dán từng lệnh, hoặc `cls` trước.
+## Hiểu lệch ở ngày 10 (Sequential Logic)
+- Tưởng `always @*` kích hoạt khi clk đổi. Thực tế `@*` nhạy với mọi tín hiệu được đọc trong khối, là mạch tổ hợp, không dính clk.
+- Tưởng `*` là "or" còn edge là "and". Thực tế danh sách nhạy `@(posedge clk, posedge areset)` là "hoặc": cạnh nào tới trước cũng kích hoạt khối.
+- Khi nêu cách tránh latch chỉ nhớ một cách. Có hai: gán mặc định đầu khối always, hoặc phủ đủ nhánh bằng else/default.

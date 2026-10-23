@@ -17,3 +17,6 @@
 - Tưởng `always @*` kích hoạt khi clk đổi. Thực tế `@*` nhạy với mọi tín hiệu được đọc trong khối, là mạch tổ hợp, không dính clk.
 - Tưởng `*` là "or" còn edge là "and". Thực tế danh sách nhạy `@(posedge clk, posedge areset)` là "hoặc": cạnh nào tới trước cũng kích hoạt khối.
 - Khi nêu cách tránh latch chỉ nhớ một cách. Có hai: gán mặc định đầu khối always, hoặc phủ đủ nhánh bằng else/default.
+## Lỗi gặp ở ngày 12 (detect_an_edge)
+- Dùng in_d trong always mà chưa khai báo, và quên reg cho cổng ra pedge được gán trong always.
+- Khai báo reg in_d; thiếu độ rộng nên chỉ nhớ 1 bit trong khi in có 8 bit (khai báo có tên nhưng thiếu độ rộng).

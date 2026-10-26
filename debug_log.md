@@ -20,3 +20,9 @@
 ## Lỗi gặp ở ngày 12 (detect_an_edge)
 - Dùng in_d trong always mà chưa khai báo, và quên reg cho cổng ra pedge được gán trong always.
 - Khai báo reg in_d; thiếu độ rộng nên chỉ nhớ 1 bit trong khi in có 8 bit (khai báo có tên nhưng thiếu độ rộng).
+## Lỗi gặp ở ngày 14 (counter_mod10 + testbench có clock)
+- Hai khối if riêng cùng gán một biến trong always @(posedge clk): lệnh sau đè lệnh trước, reset bị bỏ qua khi en=1. Cách tránh: dùng if / else if.
+- Đặt rst bên trong if (en) làm reset phụ thuộc enable.
+- Viết sai thứ tự hằng số 4d'0 (đúng là 4'd0), gán giá trị ngay ở khai báo cổng ra, quên reg cho cổng ra được gán trong always.
+- Để dấu ? và ... trong testbench, iverilog báo "Malformed conditional expression". Cách tránh: thay hết chỗ trống trước khi biên dịch.
+- Testbench chỉ reset một lần ở đầu nên chưa bắt được lỗi reset bị en đè. Cần thêm reset giữa chừng.

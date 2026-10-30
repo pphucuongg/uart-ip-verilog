@@ -26,3 +26,10 @@
 - Viết sai thứ tự hằng số 4d'0 (đúng là 4'd0), gán giá trị ngay ở khai báo cổng ra, quên reg cho cổng ra được gán trong always.
 - Để dấu ? và ... trong testbench, iverilog báo "Malformed conditional expression". Cách tránh: thay hết chỗ trống trước khi biên dịch.
 - Testbench chỉ reset một lần ở đầu nên chưa bắt được lỗi reset bị en đè. Cần thêm reset giữa chừng.
+## Lỗi gặp ở ngày 15 (testbench counter_mod10)
+- Chạy iverilog khi đứng ở thư mục gốc trong khi file nằm ở thư mục con, báo No such file or directory. Cách tránh: nhìn prompt, cd vào thư mục chứa file một lần.
+- Copy cả dòng prompt rồi dán vào terminal, PowerShell hiểu PS là Get-Process. Cách tránh: chỉ gõ phần lệnh.
+- Hai khối if riêng cùng gán một biến trong always @(posedge clk): lệnh sau đè lệnh trước, mất ưu tiên reset. Cách tránh: dùng if / else if.
+- Ca giữ nguyên (en=0) không chờ clock nên không thử gì. Cách tránh: gán đầu vào, chờ posedge, #1, rồi mới so sánh.
+- Ca rst=1 quên đặt lại en=1 nên không thử đúng tình huống reset đè enable.
+- Hạ reset hoặc gán đầu vào ngay tại cạnh clock. Cách tránh: đổi đầu vào ở #1 sau cạnh.

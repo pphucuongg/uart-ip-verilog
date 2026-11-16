@@ -33,3 +33,10 @@
 - Ca giữ nguyên (en=0) không chờ clock nên không thử gì. Cách tránh: gán đầu vào, chờ posedge, #1, rồi mới so sánh.
 - Ca rst=1 quên đặt lại en=1 nên không thử đúng tình huống reset đè enable.
 - Hạ reset hoặc gán đầu vào ngay tại cạnh clock. Cách tránh: đổi đầu vào ở #1 sau cạnh.
+## Lỗi gặp ở uart_tx
+- (Thiết kế) Lần đầu bit start, d7 và tx_busy sai vì state đổi theo tick còn tx gán mỗi clock, hai thứ lệch pha. Cách tránh: chạy tay bảng với DIV nhỏ trước khi viết tb, và thêm trạng thái WAIT_TICK để bit start bắt đầu đúng ranh giới tick.
+- (Testbench) tb cũ PASS dù thiếu WAIT_TICK vì tx_start luôn bắn ở một pha và chỉ lấy mẫu giữa bit, không đo độ dài bit start. Cách vá: quét 4 pha của tx_start và đếm N mẫu tx=0 sau cạnh xuống.
+- (Mutation) Bỏ WAIT_TICK: 12 lỗi (lỗi bị đếm đôi). bit_cnt == 6: 7 lỗi (d7 đọc nhầm bit stop). Bỏ if (tick) ở tx_busy: watchdog nổ vì tx_start đến lúc còn ở STOP bị bỏ qua.
+- (Bài học) Byte d7 = 1 như a5, 55 dễ lọt vì bit stop cũng bằng 1, nên phải thêm byte d7 = 0 như 3d, 5b, 2f.
+- (Còn hở) Chưa kiểm tra start dài hơn N khi D0 = 0; TH2 chỉ reset ở DATA; lỗi bị đếm đôi.
+- (Quy trình) Dán iverilog và vvp cùng lúc; $display tiếng Việt lỗi font.

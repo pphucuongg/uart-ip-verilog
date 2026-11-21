@@ -40,3 +40,9 @@
 - (Bài học) Byte d7 = 1 như a5, 55 dễ lọt vì bit stop cũng bằng 1, nên phải thêm byte d7 = 0 như 3d, 5b, 2f.
 - (Còn hở) Chưa kiểm tra start dài hơn N khi D0 = 0; TH2 chỉ reset ở DATA; lỗi bị đếm đôi.
 - (Quy trình) Dán iverilog và vvp cùng lúc; $display tiếng Việt lỗi font.
+## Lỗi gặp ở uart_rx
+- (Thiết kế) Bản đầu thiếu một end ở khối always @(posedge clk) và dùng = lẫn <= trong khối đồng bộ. Cách tránh: đếm cặp begin/end trước khi biên dịch, khối posedge clk chỉ dùng <=.
+- (Thiết kế) Frame có stop = 0 làm mạch đứng yên ở STOP vì điều kiện rx == 1 sai. Đã thêm trạng thái ERR_WAIT (chờ rx lên 1 rồi mới về IDLE) và cổng frame_err. rx_done và frame_err là xung 1 clk, nằm ở hai nhánh if/else của cùng một lần kiểm tra nên không bao giờ cùng lên.
+- (Thiết kế) Dữ liệu dịch vào shift_reg, chỉ chép sang rx_data khi stop = 1, nên frame lỗi không làm đổi rx_data.
+- (Testbench) Lỗi khi viết tb: thiếu assign s_tick; watchdog 50000 ns quá ngắn so với tổng thời gian các ca; task khai báo cổng hai lần (trong ngoặc và trong thân); thiếu dấu ( sau @ trong repeat; đổi rx đúng tại cạnh clock thay vì #1 sau cạnh; rx kẹt ở 0 sau bit stop lỗi.
+- (Mutation) Bỏ kiểm tra rx ở START: 3 lỗi (nhiễu tạo byte FF giả, các ca

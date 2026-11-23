@@ -1,6 +1,11 @@
 module uart_tx ( 
-    input clk, input rst, input tick, input tx_start, input [7:0] tx_data,
-    output reg tx, output reg tx_busy 
+    input       clk,
+    input       rst,
+    input       tick, 
+    input       tx_start, 
+    input [7:0] tx_data,
+    output reg tx,
+    output reg tx_busy 
 );
     reg [2:0] state, next_state; 
     reg [2:0] bit_cnt;

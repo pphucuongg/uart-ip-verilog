@@ -1,3 +1,4 @@
 sim
 *.vcd
 *.vvp
+sim_*
